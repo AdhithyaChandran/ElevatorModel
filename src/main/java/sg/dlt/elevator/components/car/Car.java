@@ -1,29 +1,25 @@
 package main.java.sg.dlt.elevator.components.car;
 
-import main.java.sg.dlt.elevator.Elevator;
 import main.java.sg.dlt.elevator.components.Display;
 import main.java.sg.dlt.elevator.components.Processor;
-import main.java.sg.dlt.elevator.request.InternalRequest;
 
-import java.util.PriorityQueue;
 import java.util.Random;
 
 public class Car {
-    private int currentFloor = 0;
 
-
-    public int getCurrentFloor() {
-        return currentFloor;
+    public int generateRandomLoad() {
+        Random random = new Random();
+        return random.nextInt(1000);
     }
 
-    private static Car car = null;
+    public void loadCheck(int load) {
+        if (load > 1050) {
+            System.out.println("Overload...");
+            loadCheck(generateRandomLoad());
+        }
+    }
 
-    private Processor processor;
 
-    private PriorityQueue<InternalRequest> internalRequests = new PriorityQueue<>();
-
-
-    private Display display;
 
 
 }

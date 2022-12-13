@@ -2,10 +2,7 @@ package main.java.sg.dlt.elevator.components;
 
 import main.java.sg.dlt.elevator.Elevator;
 import main.java.sg.dlt.elevator.components.car.Direction;
-import main.java.sg.dlt.elevator.request.InternalRequest;
 
-import java.util.Comparator;
-import java.util.PriorityQueue;
 import java.util.TreeSet;
 
 public class Processor {
@@ -39,22 +36,16 @@ public class Processor {
         return processor;
     }
 
-    public Direction getDirection() {
-        return direction;
-    }
-
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
-    public synchronized void addFloor(int floor, Thread requestProcessorThread) {
+    public synchronized void addNewRequest(int floor) {
         requestSet.add(floor);
-
-        if(requestProcessorThread.getState() == Thread.State.WAITING){
-            // Notify processor thread that a new request has come if it is waiting
+        Elevator elevator = Elevator.getInstance();
+        if(elevator.getRequestProcessorThread().getState() == Thread.State.WAITING){
             notify();
         }else{
-            // Interrupt Processor thread to check if new request should be processed before current request or not.
-            requestProcessorThread.interrupt();
+            elevator.getRequestProcessorThread().interrupt();
         }
 
     }
@@ -84,7 +75,6 @@ public class Processor {
                 e.printStackTrace();
             }
         } else {
-            // Remove the request from Set as it is the request in Progress.
             requestSet.remove(floor);
         }
         return (floor == null) ? -1 : floor;
@@ -102,6 +92,10 @@ public class Processor {
         display.dispalyFloor(currentFloor);
 
         Thread.sleep(3000);
+    }
+
+    public boolean isValidFloorNumber(int floor) {
+        return (floor < 100);
     }
 
 }

@@ -7,33 +7,25 @@ import main.java.sg.dlt.elevator.components.car.Car;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Scanner;
 
 
 public class RequestListener  implements Runnable {
+    Processor processor = Processor.getInstance();
     @Override
     public void run() {
-
+        Scanner sc = new Scanner(System.in);
         while (true) {
-            String floorNumberStr = null;
-            try {
-                // Read input from console
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-                floorNumberStr = bufferedReader.readLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            if (isValidFloorNumber(floorNumberStr)) {
+            int floorNumberStr ;
+            floorNumberStr = sc.nextInt();
+            if (processor.isValidFloorNumber(floorNumberStr)) {
                 System.out.println("User Pressed : " + floorNumberStr);
-                Processor processor = Processor.getInstance();
-                processor.addFloor(Integer.parseInt(floorNumberStr),Elevator.requestProcessorThread);
+                processor.addNewRequest(floorNumberStr);
             } else {
                 System.out.println("Floor Request Invalid : " + floorNumberStr);
             }
         }
     }
 
-        private boolean isValidFloorNumber(String s) {
-            return (s != null) && s.matches("\\d{1,2}");
-        }
+        
 }
