@@ -11,16 +11,15 @@ import java.util.Scanner;
 
 
 public class RequestListener  implements Runnable {
-    Processor processor = Processor.getInstance();
     @Override
     public void run() {
         Scanner sc = new Scanner(System.in);
         while (true) {
             int floorNumberStr ;
             floorNumberStr = sc.nextInt();
-            if (processor.isValidFloorNumber(floorNumberStr)) {
+            if (Processor.getInstance().isValidFloorNumber(floorNumberStr)) {
                 System.out.println("User Pressed : " + floorNumberStr);
-                processor.addNewRequest(floorNumberStr);
+                Processor.getInstance().addNewRequest(floorNumberStr);
             } else {
                 System.out.println("Floor Request Invalid : " + floorNumberStr);
             }
