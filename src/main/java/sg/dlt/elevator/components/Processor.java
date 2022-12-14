@@ -1,12 +1,10 @@
 package main.java.sg.dlt.elevator.components;
 
-import main.java.sg.dlt.elevator.Elevator;
-import main.java.sg.dlt.elevator.components.car.Direction;
 import main.java.sg.dlt.elevator.request.InternalRequest;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
-import java.util.TreeSet;
+
 
 public class Processor implements Comparator<InternalRequest> {
 
