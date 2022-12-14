@@ -58,8 +58,7 @@ public class Processor implements Comparator<InternalRequest> {
 
     public synchronized int nextFloor() {
 
-        Integer floor = null;
-                //internalRequests.remove().getCurrentfloor();
+        Integer floor = internalRequests.remove().getCurrentfloor();
         if (floor == null) {
             try {
                 System.out.println("Waiting at Floor :" + getCurrentFloor());
