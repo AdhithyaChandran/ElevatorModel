@@ -55,8 +55,8 @@ public class Processor implements Comparator<InternalRequest> {
     }
 
     public synchronized int nextFloor() {
-
-        Integer floor = internalRequests.remove().getCurrentfloor();
+        Integer floor = null;
+        floor = (internalRequests.size()>0) ? internalRequests.remove().getCurrentfloor(): null;
         if (floor == null) {
             try {
                 System.out.println("Waiting at Floor :" + getCurrentFloor());
@@ -80,35 +80,20 @@ public class Processor implements Comparator<InternalRequest> {
         return (floor < 100);
     }
 
-    public void moveTo(){
-        int floor = nextFloor();
-        int currentFloor = getCurrentFloor();
-        while (true) {
-            try{
-                if (floor >= 0) {
-                    if (currentFloor > floor) {
-                        while (currentFloor > floor) {
-                            setCurrentFloor(--currentFloor);
-                        }
-                    } else {
-                        while (currentFloor < floor) {
-                            setCurrentFloor(++currentFloor);
-                        }
-                    }
-                    Display.getInstance().displayWelcome(getCurrentFloor());
+    public void move(int destinationFloor, int currentFloor) throws InterruptedException {
+        if (destinationFloor >= 0) {
+            if (currentFloor > destinationFloor) {
+                while (currentFloor > destinationFloor) {
+                    setCurrentFloor(--currentFloor);
                 }
-
-            }catch(InterruptedException e){
-                // If a new request has interrupted a current request processing then check -
-                // -if the current request is already processed
-                // -otherwise add it back in request Set
-                if(getCurrentFloor() != floor){
-                    getRequests().add(floor);
+            } else {
+                while (currentFloor < destinationFloor) {
+                   setCurrentFloor(++currentFloor);
                 }
             }
+            Display.getInstance().displayWelcome(Processor.getInstance().getCurrentFloor());
         }
     }
-
 
     @Override
 
